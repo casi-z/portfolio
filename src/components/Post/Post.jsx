@@ -1,6 +1,7 @@
 import Logo from '../Logo/Logo';
 import { postList } from '../../data/PostList';
 import './Post.scss'
+import Verify from '../Icons/Verify/Verify';
 const test = n => window.addEventListener('keydown',(e)=>{if(e.key==='Alt')alert(n);if(e.key==='Control')console.log(n)})
 const {log} = console
 
@@ -18,7 +19,7 @@ function Post({props}) {
                 <div className="post__column post__column_right">
                     <div className="post__bar post__bar_top">
                         <div className="post__userInfo userInfo">
-                            <span className='userInfo__userName'>casi_z</span>
+                            <span className='userInfo__userName'>casi_z <Verify/></span>
                             <span className='userInfo__href'>@casiz</span>
                         </div>
                     </div>

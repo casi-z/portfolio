@@ -72,10 +72,10 @@ $fonts: '../../../public/fonts';
         align-items: flex-start;
         font-size: 20px;
         &__userName{
-            
+            position: relative;
             color: black;
             font-weight: bold;
-            margin-right: 10%;
+            margin-right: calc(10% + 20px);
         
         }
         &__href{

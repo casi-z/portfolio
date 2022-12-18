@@ -1,0 +1,9 @@
+@import "../../../../../scss/var.scss";
+$img: "../../../../../public/img";
+$fonts: "../../../../../public/fonts";
+.Verify{
+	margin-left: 5px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
