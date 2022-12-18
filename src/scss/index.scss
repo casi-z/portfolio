@@ -1,0 +1,20 @@
+@import "null-style.scss";
+@import "var.scss";
+
+@font-face {font-family: "GT America"; src: url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.eot"); src: url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.eot?#iefix") format("embedded-opentype"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.woff2") format("woff2"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.woff") format("woff"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.ttf") format("truetype"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.svg#GT America") format("svg"); }
+html{
+    body{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-family: sans-serif;
+        .wrapper{
+            width: 598px;
+            min-height: $headerHeight;
+            border: 1px solid rgb(239, 243, 244);
+            @media(max-width:598px){
+                width: 100vw;
+            }
+        }
+    }
+}
