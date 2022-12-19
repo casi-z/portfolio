@@ -9,9 +9,10 @@
     }
     &__row{
         width: 100%;
-        height: 50%;
+        
         &_decor{
-            background: url(../../../public/img/decor-2.jpg) center/cover;
+            background: url(../../../public/img/decor-2.jpg);
+			height: 199.33px;
         }
         &_info{
             position: relative;
@@ -25,7 +26,9 @@
                 width: 135px;
                 height: 135px;
             }
+
         }
+		
         h1{
             font-size: 20px;
             font-weight: bolder;
@@ -35,18 +38,38 @@
         }
         h2{
             color: $darkGrey;
-            margin-bottom: 1vh;
+            
 			font-size: 15px;
         }
         span{
             color: $black;
             font-size: 15px;
             font-weight: normal;
-            margin-bottom: 2vh;
+			margin-top: 1.5vh;
+			margin-bottom: 5px;
+            
         }
+		.hashTags{
+			margin-bottom: 1.5vh;
+			
+			a{
+				color: $lightBlue;
+				cursor: pointer;
+				&:hover{
+					text-decoration: underline;
+				}
+			}
+			
+		}
         
 	}
-
+	&__buttons{
+		display: flex;
+		justify-content: flex-end;
+		position: absolute;
+		top: 10px;
+		right: 0;
+	}
 	.data{
 		display: flex;
 		
@@ -71,6 +94,23 @@
 					text-decoration: underline;
 				}
 			}
+		}
+	}
+	.followers{
+		color: $darkGrey;
+		margin-top: 1.5vh;
+		h3{
+			display: inline;
+			margin-right: 1vw;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+		
+		&__number{
+			color: $black;
+			font-weight: bold;
+			
 		}
 	}
 }
