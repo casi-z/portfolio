@@ -1,0 +1,48 @@
+@import "../../scss/var.scss";
+$img: "../../../../public/img";
+$fonts: "../../../../public/fonts";
+.Name{
+	z-index: 4;
+	position: sticky;
+	top: 0;
+	width: 596px;
+	height: 53px;
+	display: flex;
+	align-items: center;
+	
+	
+	&__blur{
+		z-index: 3;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		backdrop-filter: blur(12px);
+		background-color: rgba(255, 255, 255, 0.85);
+	}
+	&__content{
+		z-index: 4;
+		display: flex;
+		align-items: center;
+	}
+	.UserName{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		height: auto;
+		svg{
+			position: static;
+			
+		}
+	}
+	
+	.Button{
+		border: none;
+		margin-left: 0.5vw;
+		margin-right: 1vw;
+		
+		
+	}
+}

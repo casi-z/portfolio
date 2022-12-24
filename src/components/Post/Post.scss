@@ -76,12 +76,11 @@ $fonts: '../../../public/fonts';
             color: black;
             font-weight: bold;
             margin-right: calc(10% + 20px);
+			display: flex;
         
         }
         &__href{
         
-            
-            
         }
         
     }

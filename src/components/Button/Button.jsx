@@ -1,8 +1,8 @@
 import './Button.scss'
 const {log} = console
-function Button({props, children}) {
+function Button({props, onClick, children}) {
 	return (
-		<div className="Button">{children}</div>
+		<div onClick={onClick} className="Button">{children}</div>
 	)
 }
 export default Button;

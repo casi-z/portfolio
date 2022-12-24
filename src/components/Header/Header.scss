@@ -4,9 +4,7 @@
     width: 100%;
 	height: $headerHeight;
     border-bottom: 1px solid rgb(239, 243, 244);
-    @media(max-width:598px){
-        width: 100vw;
-    }
+   
     &__row{
         width: 100%;
         
@@ -30,18 +28,18 @@
         }
 		
         h1{
-            font-size: 20px;
-            font-weight: bolder;
 			margin-bottom: 0.3vh;
-			position: relative;
-			
+			.UserName{
+				font-size: 20px;
+				display: flex;
+				position: relative;
+			}
         }
         h2{
             color: $darkGrey;
-            
 			font-size: 15px;
         }
-        span{
+        .header__splash{
             color: $black;
             font-size: 15px;
             font-weight: normal;
@@ -69,6 +67,7 @@
 		position: absolute;
 		top: 10px;
 		right: 0;
+		
 	}
 	.data{
 		display: flex;

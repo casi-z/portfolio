@@ -1,4 +1,5 @@
 import Header from "./components/Header/Header";
+import Name from "./components/Name/Name";
 import Post from "./components/Post/Post";
 //import equate from "./components/equate";
 // setTimeout(() => {
@@ -31,8 +32,10 @@ function App() {
 	window.addEventListener('resize', () => equate())
 	return (
 		<div className="wrapper">
+			<Name/>
 			<Header />
 			<Post />
+			
 		</div>
 	);
 }
