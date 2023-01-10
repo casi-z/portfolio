@@ -1,0 +1,16 @@
+@import "../../scss/var.scss";
+$img: "../../../../public/img";
+$fonts: "../../../../public/fonts";
+
+.Title{
+	@media(max-width:767px){
+		display: none;
+	}
+	font-size: 10px;
+	color: white;
+	background: rgba(0, 0, 0, 0.6);
+	padding: 2px;
+	border: 1px solid #000;
+	border-radius: 2px;
+	z-index: calc(9 * ((10 * 10) * 100));
+}

@@ -1,0 +1,19 @@
+$maxWidth: 1920;
+@mixin adaptiveFont($pcSize, $mobSize) {
+    $calcSize: $pcSize - $mobSize;
+    $maxWidth: $maxWidth - 320;
+    font-size: calc(#{$mobSize + px} + #{$calcSize} * ((100vw - 320px) / #{$maxWidth}));
+}
+html{
+	--grey: rgb(207, 217, 222);
+	--lightGrey: rgb(247, 247, 247);
+	--darkGrey: rgb(83, 100, 113);
+	--blue: rgb(54, 165, 241);
+	--lightBlue: rgb(29, 155, 240);
+	--green: rgb(0, 186, 124);
+	--lightGreen: rgb(222, 241, 235);
+	--black: #0f1419;
+	--headerHeight: 52.62659574468085vh;
+	--postHeight:51.43617021276596vh;
+}
+	

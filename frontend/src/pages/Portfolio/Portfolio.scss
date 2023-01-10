@@ -1,0 +1,27 @@
+@import "../../scss/var.scss";
+$img: "../../../../public/img";
+$fonts: "../../../../public/fonts";
+@font-face {font-family: "GT America"; src: url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.eot"); src: url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.eot?#iefix") format("embedded-opentype"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.woff2") format("woff2"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.woff") format("woff"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.ttf") format("truetype"), url("https://db.onlinewebfonts.com/t/031da03967812d134ed68febd3ba78a9.svg#GT America") format("svg"); }
+html{
+	scroll-behavior: smooth;
+    body{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-family: sans-serif;
+		//font-size: 26px;
+		line-height: 20px;
+		font-weight: 300;
+		letter-spacing: .01em;
+        .wrapper{
+			margin-right: 100px;
+            width: 598px;
+            min-height: var(--headerHeight);
+			overflow: hidden;
+            border: 1px solid rgb(239, 243, 244);
+            @media(max-width:599px){
+                width: 100vw;
+            }
+        }
+    }
+}

@@ -1,0 +1,124 @@
+@import "../../scss/var.scss";
+
+.header{
+    width: 100%;
+	//height: var(--headerHeight);
+    border-bottom: 1px solid rgb(239, 243, 244);
+	margin-top: 53px;
+    &__row{
+        width: 100%;
+        
+        &_decor{
+            background: url(../../../public/img/decor-2.jpg) center/cover;
+			height: 21.20531914893617vh;
+        }
+        &_info{
+            position: relative;
+            padding: 15% 0 2% 15px;
+            display: flex;
+            flex-direction: column;
+            .logo{
+                position: absolute;
+                top: 0%;
+                transform: translateY(-50%);
+                width: 22.5752508361204%;
+            }
+
+        }
+		
+        h1{
+			margin-bottom: 0.3vh;
+			.UserName{
+				font-size: 20px;
+				display: flex;
+				position: relative;
+			}
+        }
+        h2{
+            color: var(--darkGrey);
+			font-size: 15px;
+        }
+        .header__splash{
+            color: var(--black);
+            font-size: 15px;
+            font-weight: normal;
+			margin-top: 1.5vh;
+			margin-bottom: 5px;
+            
+        }
+		.hashTags{
+			margin-bottom: 1.5vh;
+			
+			a{
+				color: var(--lightBlue);
+				cursor: pointer;
+				&:hover{
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+	&__buttons{
+		display: flex;
+		justify-content: flex-end;
+		position: absolute;
+		top: 10px;
+		right: 0;
+		font-weight: 500;
+		
+	}
+	.data{
+		display: flex;
+		@media(max-width:598px){
+			flex-direction: column;
+		}
+		svg{
+			width: 20px;
+			height: 20px;
+			fill: var(--darkGrey);
+			margin-right: 0.2vw;
+		}
+		&__row{
+			margin-right: 0.7vw;
+			font-size: 15px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			@media(max-width:598px){
+				justify-content: flex-start;
+				align-items: flex-start;
+				margin-bottom: 0.5vh;
+			}
+			color: var(--darkGrey);
+			
+			&_github{
+				color: var(--lightBlue);
+				cursor: pointer;
+				&:hover{
+					text-decoration-line: underline;
+					text-decoration-thickness: 1px;
+				}
+			}
+			
+		}
+	}
+	.followers{
+		color: var(--darkGrey);
+		margin-top: 1.5vh;
+		h3{
+			display: inline;
+			margin-right: 3%;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+		
+		&__number{
+			color: var(--black);
+			font-weight: bold;
+			
+		}
+	}
+}
+
+    

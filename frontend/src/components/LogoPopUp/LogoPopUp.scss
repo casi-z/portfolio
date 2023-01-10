@@ -1,0 +1,41 @@
+@import "../../scss/var.scss";
+$img: "../../../../public/img";
+$fonts: "../../../../public/fonts";
+.LogoPopUp{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(64, 36, 63, 0.9);
+	z-index: 99;
+	.logo{
+		height: 19.166666666666668vw;
+		width: 19.166666666666668vw;
+		border: none;
+	}
+	&__closeButton{
+		width: 34px;
+		height: 34px;
+		position: absolute;
+		border-radius: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		top: 1%;
+		left: 1%;
+		backdrop-filter: blur(4px); 
+		background: rgba(64, 36, 63, 0.75);
+		cursor: pointer;
+		svg{
+			width: 20px;
+			height: 20px;
+			fill: white;
+			cursor: pointer;
+		}
+	}
+}
