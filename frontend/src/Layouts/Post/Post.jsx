@@ -1,13 +1,52 @@
 import Logo from '../../components/Logo/Logo';
 import './Post.scss'
+import { icons } from '../../data/IconList';
 import UserName from '../../components/UserName/UserName';
 import Href from '../../components/Href/Href';
+import { useEffect } from 'react';
+import axios from 'axios';
 // eslint-disable-next-line
 const { log } = console
+let postsCopy = []
+function Post({ props }) {
 
-function Post({ props, postList }) {
+	function textEdit(targ, index, type) {
+		
+		targ.setAttribute('contenteditable', true)
+
+		let saveButton
+
+		if (!targ.querySelector('.saveButton')) createSaveButton()
+		
+		function createSaveButton() {
+			saveButton = document.createElement('span')
+			saveButton.className = 'saveButton'
+			saveButton.textContent = 'Save'
+			targ.append(saveButton)
+		}
+	
+		saveButton.onclick = () => {
+			saveButton.remove()
+			postsCopy[index][type] = targ.textContent
+			targ.setAttribute('contenteditable', null)
+			props.setPosts(postsCopy)
+			log(props.posts[index])
+			addPost()
+		}
+		
+		async function addPost() {
+			await axios.post('/api/add-post', {
+				newPost: postsCopy[index]
+			})
+			.then(res => log(res))
+		}
+	}
+	useEffect(() => {
+		postsCopy = [...props.posts]
+	}, [props.posts])
 	return (<>
-		{postList.map((post, index) =>
+		{props.posts.map((post, index) =>
+			
 			<div id={'post-' + (index + 1)} key={index} className="post">
 				{/* <div className="post__head">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7 4.5C7 3.12 8.12 2 9.5 2h5C15.88 2 17 3.12 17 4.5v5.26L20.12 16H13v5l-1 2-1-2v-5H3.88L7 9.76V4.5z"></path></g></svg>
@@ -24,20 +63,19 @@ function Post({ props, postList }) {
 							<span className="userInfo__point"> · </span>
 							<span className="userInfo__date">19h</span>
 						</div>
-						
 					</div>
 					<div className="post__bar post__bar_bottom">
-						<div className='post__projectDescription projectDescription'>
-
+						<div  className='post__projectDescription projectDescription'>
 							{post.fullName || post.name}
-							<br />
-							<br />
-							<p>{post.description}</p>
-
-							<br />
+							<div onClick={e => props.admin ? textEdit(e.currentTarget, index, 'description'): null} className="projectDescription__text">
+								
+								<br />
+								<p>{post.description}</p>
+								<br />
+							</div>
 							<div className="projectDescription__iconContainer">
 								Написан на: 
-								{post.writeOn.map(icon => icon)}
+								{post.writeOn.map(icon => icons[icon.toLowerCase()])}
 
 							</div>
 							

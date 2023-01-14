@@ -13,7 +13,7 @@ const { log } = console
 
 
 
-function Portfolio({ props }) {
+function Portfolio({ props, children }) {
 	const [posts, setPosts] = useState([])
 	const wrapper = useRef()
 
@@ -27,57 +27,72 @@ function Portfolio({ props }) {
 		if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
 			fetchPosts(state.loadedPostsLength)
 		}
-		log(state.loadedPostsLength === state.allPostsLength)
+		//log(state.loadedPostsLength, '/' , state.allPostsLength)
 	}
+	
 
 	async function fetchPosts(id) {
+
 		if (state.loadedPostsLength === state.allPostsLength) return
-		await fetch(
-			'http://localhost:5000/api/',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				
-				body: JSON.stringify([id])
+
+		await axios.post('/api/',{
+				'id': id
 			}
-		).then(res => res.json())
-			.then(data => {
-				if(typeof data === 'object' && posts.indexOf(data) != -1){
-					setPosts([...posts, data])
-					setState({...state, loadedPostsLength: state.loadedPostsLength + 1})
-				}
-			})
-		
+		).then(res => {
+			let data = res.data
+			if (typeof res.data === 'object') {
+				setPosts([...posts, res.data])
+				setState({...state, loadedPostsLength: state.loadedPostsLength + 1})
+			}
+		})
+
 	}
 
 	async function fetchPostsLength() {
-		await fetch(
-			'http://localhost:5000/api/posts-length',
+		await axios.get('/api/posts-length')
+			.then(res => setState({ ...state, allPostsLength: res.data[0] }))
 			
-		).then(res => res.json())
-			.then(data => setState({...state, allPostsLength: data[0]}))
-	
+
+
+	}
+
+	function showWatchers() {
+		const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
+		if (localStorage.getItem('token') === token) return
+		else {
+			localStorage.setItem('token', token)
+			addWatcher()
+		}
 		
 	}
 
-
+	async function addWatcher() {
+		await axios.post('/api/add-watcher', {
+			id: 1
+		})
+	}
 	useEffect(() => {
 		fetchPosts(0)
 		fetchPostsLength()
+		showWatchers()
 	}, [])
 
-	
+
 
 	return (<>
 		<PixPe />
 		<Title />
+		{children}
 		<div ref={wrapper} className="wrapper">
 			<a name='top'></a>
 			<Name />
 			<Header />
-			<Post postList={posts} />
+			
+			<Post props={{
+				admin: props.admin,
+				'posts': posts,
+				'setPosts': setPosts,
+			}} />
 
 		</div>
 	</>)

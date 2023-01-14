@@ -201,4 +201,12 @@ $fonts: '../../../public/fonts';
             height: calc(100% - 62px);
         }
     }
+	.saveButton{
+		padding: 7px 2vw;
+		background: var(--blue);
+		color: white;
+		border-radius: 99999px;
+		cursor: pointer;
+		font-weight: bold;
+	}
 }

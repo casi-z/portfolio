@@ -38,7 +38,8 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path='/' element={<Portfolio/>} />
+				<Route path='/' element={<Portfolio props={{admin: false}}/>} />
+				<Route path='/admin' element={<Portfolio props={{admin: true}}></Portfolio>} />
 			</Routes>
 		</BrowserRouter>
 			

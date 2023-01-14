@@ -16,6 +16,7 @@ import { postList } from "../../data/PostList";
 import Href from "../../components/Href/Href"
 import { useState } from "react";
 import LogoPopUp from "../../components/LogoPopUp/LogoPopUp";
+import axios from "axios";
 // eslint-disable-next-line
 const { log } = console
 
@@ -26,8 +27,15 @@ setTimeout(() => {
 //window.onresize = equate()
 function Header({ props }) {
 
-	useEffect(() => {
+	const [views, setViews] = useState(0)
+
+	async function getViews(params) {
+		await axios.get('/api/watchers')
+			.then(res => setViews(res.data.watchers))
 		
+	}
+	useEffect(() => {
+		getViews()
 	}, [])
 	const [isBigLogoVisible, setIsBigLogoVisible] = useState(false)
 	return (
@@ -42,7 +50,7 @@ function Header({ props }) {
 					<Button><Mail /></Button>
 					<OrderButton>Order</OrderButton>
 				</div>
-				<h1>
+				<h1> 
 					<UserName/>
 				</h1>
 				<Href/>
@@ -81,7 +89,7 @@ function Header({ props }) {
 				</div>
 				<div className="header__followers followers">
 					<h3><span className="followers__number">{postList.length}</span> Projects</h3>
-					<h3><span className="followers__number">784K</span> Views</h3>
+					<h3><span className="followers__number">{views}</span> Views</h3>
 				</div>
 			</div>
 		</header>
