@@ -3,6 +3,6 @@ const router = express.Router()
 
 const controller = require('../controllers/admin')
 
-router.get('/adffd-post', controller.addPost)
+router.post('/add--post', controller.setPost)
 
 module.exports = router

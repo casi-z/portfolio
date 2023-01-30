@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
+import Tabs from '../../Layouts/Tabs/Tabs';
 
 const { log } = console
 
@@ -32,19 +33,19 @@ function Portfolio({ props, children }) {
 	
 
 	async function fetchPosts(id) {
-
-		if (state.loadedPostsLength === state.allPostsLength) return
+		log('work')
+		if (state.allPostsLength && state.loadedPostsLength === state.allPostsLength) return
 
 		await axios.post('/api/',{
 				'id': id
 			}
 		).then(res => {
-			let data = res.data
-			if (typeof res.data === 'object') {
+			
+			if (typeof res.data === 'object' && posts.indexOf(res.data) == -1) {
 				setPosts([...posts, res.data])
 				setState({...state, loadedPostsLength: state.loadedPostsLength + 1})
 			}
-		})
+		}).catch(err => log(err))
 
 	}
 
@@ -58,12 +59,10 @@ function Portfolio({ props, children }) {
 
 	function showWatchers() {
 		const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
-		if (localStorage.getItem('token') === token) return
-		else {
+		if (!localStorage.getItem('token') === token) {
 			localStorage.setItem('token', token)
 			addWatcher()
 		}
-		
 	}
 
 	async function addWatcher() {
@@ -71,27 +70,41 @@ function Portfolio({ props, children }) {
 			id: 1
 		})
 	}
+	function postFilter(filter) {
+		
+	}
 	useEffect(() => {
-		fetchPosts(0)
 		fetchPostsLength()
+		fetchPosts(0)
 		showWatchers()
+		
 	}, [])
 
 
 
 	return (<>
-		<PixPe />
+		
 		<Title />
 		{children}
 		<div ref={wrapper} className="wrapper">
 			<a name='top'></a>
 			<Name />
 			<Header />
+
+			<Tabs props={{
+				'posts': posts,
+				'setPosts': setPosts,
+				'postFilter': postFilter,
+				'state': state,
+				'setState': setState,
+				'fetchPosts': fetchPosts
+			}} />
 			
 			<Post props={{
 				admin: props.admin,
 				'posts': posts,
 				'setPosts': setPosts,
+				
 			}} />
 
 		</div>

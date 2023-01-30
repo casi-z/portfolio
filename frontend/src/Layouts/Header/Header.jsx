@@ -2,7 +2,6 @@ import "./Header.scss"
 import equate from "../../utils/equate";
 import wordRandom from '../../utils/wordRandom'
 import Logo from "../../components/Logo/Logo"
-import Verify from '../../components/Icons/Verify/Verify'
 import GeoLocation from "../../components/Icons/GeoLocation/GeoLocation";
 import Calendar from "../../components/Icons/Calendar/Calendar"
 import Link from "../../components/Icons/Link/Link";
@@ -10,7 +9,7 @@ import Tools from "../../components/Icons/Tools/Tools";
 import Button from '../../components/Button/Button' 
 import UserName from '../../components/UserName/UserName'
 import Mail from "../../components/Icons/Mail/Mail";
-import OrderButton from "../../components/OrderButton/OrderButton";
+import TweeterButton from "../../components/TweeterButton/TweeterButton";
 import { useEffect } from "react";
 import { postList } from "../../data/PostList";
 import Href from "../../components/Href/Href"
@@ -48,7 +47,7 @@ function Header({ props }) {
 				<div className="header__buttons">
 					<Button><Tools /></Button>
 					<Button><Mail /></Button>
-					<OrderButton>Order</OrderButton>
+					<TweeterButton>Order</TweeterButton>
 				</div>
 				<h1> 
 					<UserName/>

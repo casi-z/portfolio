@@ -24,8 +24,7 @@ app.all('*', (req, res, next) => {
 app.use(express.static('public'))
 app.set('view engine')
 
-projects = {}
-projectsLength = NaN
+
 watchers = NaN
 con = mysql.createConnection({
 	host: 'localhost',
@@ -33,14 +32,7 @@ con = mysql.createConnection({
 	password: 'root',
 	database: 'portfolio',
 })
-con.query(
-	'SELECT * FROM projects',
-	function (error, result) {
-		if (error) throw error
-		projects = result
-		global.projectsLength = global.projects.length
-	}
-)
+
 
 
 // Global variables

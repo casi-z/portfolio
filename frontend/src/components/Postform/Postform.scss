@@ -1,0 +1,28 @@
+@import "../../scss/var.scss";
+$img: "../../../public/img";
+$fonts: "../../../public/fonts";
+.Postform{
+	.TweeterButton{
+		position: fixed;
+		top: 50%;
+		translate: 0 -50%;
+		margin-left: 1vw;
+		left: 0;
+		font-weight: bolder!important;
+		background: var(--lightBlue);
+		padding: 10px 4vw!important;
+		&:hover{
+			background: var(--blue);
+		}
+	}
+	&__popUp{
+		position: fixed;
+		top: 0;
+		left: 0;
+
+		width: 100vw;
+		height: 100vh;
+		background: rgba($color: #000000, $alpha: .3);
+		z-index: 9999999999999999999999999999999999999;
+	}
+}
