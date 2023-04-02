@@ -5,7 +5,7 @@ import ArrowLeft from '../../components/Icons/ArrowLeft/ArrowLeft'
 import { useState } from 'react'
 const { log } = console
 let rotateDeg = 0
-function Name({ props }) {
+function Name({props, some}) {
 	
 	const [arrowRotate, setArrowRotate] = useState(0)
     return(

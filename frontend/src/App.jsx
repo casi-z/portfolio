@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Postform from './components/Postform/Postform';
 import Portfolio from "./pages/Portfolio/Portfolio";
-
 const { log } = console
 
 function App() {
@@ -17,16 +15,18 @@ function App() {
 
 	useEffect(() => {
 		equate()
-	}, [])
+    }, [])
+    
+    
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<Portfolio props={{admin: false}}/>} />
-				<Route path='/admin' element={
+				{/* <Route path='/admin' element={
 					<Portfolio props={{ admin: true }}>
-						<Postform/>
+					
 					</Portfolio>
-				} />
+				} /> */}
 			</Routes>
 		</BrowserRouter>
 			

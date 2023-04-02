@@ -25,7 +25,6 @@ app.use(express.static('public'))
 app.set('view engine')
 
 
-watchers = NaN
 con = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',

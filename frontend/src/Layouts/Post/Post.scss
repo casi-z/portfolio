@@ -178,6 +178,7 @@ $fonts: '../../../public/fonts';
         border: 1px solid var(--grey);
 		border-radius: 16px;
 		overflow: hidden;
+       
 		.title{
 			height: 62px;
 			width: 100%;
@@ -189,11 +190,8 @@ $fonts: '../../../public/fonts';
 		a{
 			color: inherit
 		}
-		.image{
-			width: 100%;
-			height: 100%;
-			background: url(./decor.PNG);
-		}
+		
+		
 		img{
 			width: 100%;
 			height: 100%;

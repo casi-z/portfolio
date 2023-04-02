@@ -3,59 +3,46 @@ import Header from "../../Layouts/Header/Header";
 import Name from "../../Layouts/Name/Name";
 import Post from "../../Layouts/Post/Post";
 import Title from '../../components/Title/Title';
-import PixPe from '../../components/PixPe/PixPe';
 import axios from 'axios';
-import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useState } from 'react';
 import Tabs from '../../Layouts/Tabs/Tabs';
+import { PostContext } from '../../context';
+import makeRemoteRepos from '../../api/repos/makeRemoteRepos';
+import { useEffect } from 'react';
+import makeDownloadReadMe from '../../api/repos/downloadReadMe/makeDownloadReadMe';
+import { ApiClientFactory } from '../../api/ApiClientFactory';
+import { API_GIT_BASE_URL, API_GIT_USER } from '../../api/constants';
+import React from '../../components/Icons/React';
+import Node from '../../components/Icons/Node';
 
 const { log } = console
 
 
 
 function Portfolio({ props, children }) {
-	const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([])
+    let postsCopy = [...posts]
 	const wrapper = useRef()
 
 	const [state, setState] = useState({
-		setAllPostsLength: 0,
+		allPostsLength: 0,
 		loadedPostsLength: 0,
 	})
 
-	window.onscroll = e => {
-		const scrollHeight = window.scrollY + window.innerHeight
-		if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
-			fetchPosts(state.loadedPostsLength)
-		}
-		//log(state.loadedPostsLength, '/' , state.allPostsLength)
-	}
-	
+   
 
-	async function fetchPosts(id) {
-		log('work')
-		if (state.allPostsLength && state.loadedPostsLength === state.allPostsLength) return
+    const repos = makeRemoteRepos()
+    const readme = makeDownloadReadMe()
+    
+	// window.onscroll = e => {
+	// 	const scrollHeight = window.scrollY + window.innerHeight
+	// 	if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
+	// 		fetchPosts(reposNames[state.loadedPostsLength].name)
+	// 	}
+	// 	//log(state.loadedPostsLength, '/' , state.allPostsLength)
+	// }
 
-		await axios.post('/api/',{
-				'id': id
-			}
-		).then(res => {
-			
-			if (typeof res.data === 'object' && posts.indexOf(res.data) == -1) {
-				setPosts([...posts, res.data])
-				setState({...state, loadedPostsLength: state.loadedPostsLength + 1})
-			}
-		}).catch(err => log(err))
-
-	}
-
-	async function fetchPostsLength() {
-		await axios.get('/api/posts-length')
-			.then(res => setState({ ...state, allPostsLength: res.data[0] }))
-			
-
-
-	}
 
 	function showWatchers() {
 		const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
@@ -69,43 +56,98 @@ function Portfolio({ props, children }) {
 		await axios.post('/api/add-watcher', {
 			id: 1
 		})
-	}
+    }
+    
 	function postFilter(filter) {
-		
+
 	}
-	useEffect(() => {
-		fetchPostsLength()
-		fetchPosts(0)
-		showWatchers()
-		
-	}, [])
+	
+    function select(from, to, str) {
+        if (str.indexOf(from) === -1 || str.indexOf(to) === -1) return null
+        return str.substring(
+            str.indexOf(from) + from.length, 
+            str.lastIndexOf(to)
+        )
+    }
+    
+    async function fetchPosts(name) {
+        await repos.getReposContents(name)
+            .then(data => {
+                if (data.some(repo => repo.name === 'README.md')) {
+                    readme.download(name)
+                        .then(text => {
+                            postConstruct(text, name)
+                           
+                        })
+                        .catch(error => console.log(error))
+
+                } else {
+                    //console.log(`${name} - NO`)
+                }
+            })
+            .catch(error => console.log(error))
+    }
 
 
+    function postConstruct(text, name) {
+        if (text.indexOf('<Disabled/>') === -1) log(1)
+        if (text.indexOf('<Disabled/>') === -1) {
+            let postInput = {
+                name,
+                description: '',
+                writeOn: [],
+                params: ['noPages']
+            }
+
+            postInput.fullName = select('<name>', '</name>', text)
+            postInput.description = select('<-', '->', text)
+            postInput.writeOn = [<Node />]
+            
+            console.log(postInput)
+            
+            setPosts(prevState => [...prevState, postInput])
+        }
+    }
+    
+    useEffect(() => {
+        setState({ ...state, isLoading: true })
+        repos.getAll()
+            .then(data => {
+
+                data.map(item => fetchPosts(item.name))
+                
+                setState({ ...state, isLoading: false })
+
+            })
+            .catch(error => console.log(error))
+            showWatchers()
+    }, [])
 
 	return (<>
-		
 		<Title />
 		{children}
 		<div ref={wrapper} className="wrapper">
 			<a name='top'></a>
 			<Name />
-			<Header />
 
-			<Tabs props={{
-				'posts': posts,
-				'setPosts': setPosts,
-				'postFilter': postFilter,
-				'state': state,
-				'setState': setState,
-				'fetchPosts': fetchPosts
-			}} />
-			
-			<Post props={{
-				admin: props.admin,
-				'posts': posts,
-				'setPosts': setPosts,
-				
-			}} />
+			<PostContext.Provider value={{
+				posts,
+				setPosts,
+			}}>
+				<Header />
+
+				<Tabs props={{
+					postFilter,
+					state,
+					setState,
+					fetchPosts
+				}} />
+
+				<Post props={{
+					admin: props.admin,
+
+				}} />
+			</PostContext.Provider>
 
 		</div>
 	</>)
