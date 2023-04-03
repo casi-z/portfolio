@@ -44,19 +44,19 @@ function Portfolio({ props, children }) {
 	// }
 
 
-	function showWatchers() {
-		const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
-		if (!localStorage.getItem('token') === token) {
-			localStorage.setItem('token', token)
-			addWatcher()
-		}
-	}
+	// function showWatchers() {
+	// 	const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
+	// 	if (!localStorage.getItem('token') === token) {
+	// 		localStorage.setItem('token', token)
+	// 		addWatcher()
+	// 	}
+	// }
 
-	async function addWatcher() {
-		await axios.post('/api/add-watcher', {
-			id: 1
-		})
-    }
+	// async function addWatcher() {
+	// 	await axios.post('/api/add-watcher', {
+	// 		id: 1
+	// 	})
+    // }
     
 	function postFilter(filter) {
 
@@ -88,7 +88,6 @@ function Portfolio({ props, children }) {
             .catch(error => console.log(error))
     }
 
-
     function postConstruct(text, name) {
         if (text.indexOf('<Disabled/>') === -1) log(1)
         if (text.indexOf('<Disabled/>') === -1) {
@@ -110,17 +109,15 @@ function Portfolio({ props, children }) {
     }
     
     useEffect(() => {
-        setState({ ...state, isLoading: true })
+        
         repos.getAll()
             .then(data => {
 
                 data.map(item => fetchPosts(item.name))
-                
-                setState({ ...state, isLoading: false })
 
             })
             .catch(error => console.log(error))
-            showWatchers()
+            //showWatchers()
     }, [])
 
 	return (<>

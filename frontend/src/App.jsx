@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Portfolio from "./pages/Portfolio/Portfolio";
+import Portfolio from "./pages/Portfolio/Portfolio"
 const { log } = console
 
 function App() {

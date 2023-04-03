@@ -9,10 +9,10 @@ export class RemoteRepos {
 
     async getAll() {
         return await this.httpClient.get(API_GIT_REPOS)
-    } 
+    }
     
     async getReposContents(name) {
-        const url = `${API_GIT_REPOS_CONTENTS}${name}/contents/` 
+        const url = `${API_GIT_REPOS_CONTENTS}${name}/contents/`
         return await this.httpClient.get(url)
     }
 }

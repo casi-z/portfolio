@@ -15,7 +15,6 @@ import { postList } from "../../data/PostList";
 import Href from "../../components/Href/Href"
 import { useState } from "react";
 import LogoPopUp from "../../components/LogoPopUp/LogoPopUp";
-import axios from "axios";
 // eslint-disable-next-line
 const { log } = console
 
@@ -28,10 +27,10 @@ function Header({ props }) {
 
 	const [views, setViews] = useState(0)
 
-	async function getViews(params) {
-		await axios.get('/api/watchers')
-			.then(res => setViews(res.data.watchers))
-		
+	function getViews(params) {
+		// await axios.get('/api/watchers')
+		// 	.then(res => setViews(res.data.watchers))
+		setViews(15)
 	}
 	useEffect(() => {
 		getViews()
