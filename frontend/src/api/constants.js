@@ -6,4 +6,4 @@ export const API_GIT_REPOS_CONTENTS = `/repos/${API_GIT_USER}/`
 export const API_GIT_BASE_CD_URL = 'https://raw.githubusercontent.com'
 export const API_GIT_CONTENT_DOWNLOAD = `/${API_GIT_USER}/`
 
-export const token = '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'
+export const token = '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'
