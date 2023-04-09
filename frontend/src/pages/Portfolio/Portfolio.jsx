@@ -11,10 +11,12 @@ import { PostContext } from '../../context';
 import makeRemoteRepos from '../../api/repos/makeRemoteRepos';
 import { useEffect } from 'react';
 import makeDownloadReadMe from '../../api/repos/downloadReadMe/makeDownloadReadMe';
+import getPages from '../../api/repos/getPages/getPages';
 import { ApiClientFactory } from '../../api/ApiClientFactory';
 import { API_GIT_BASE_URL, API_GIT_USER } from '../../api/constants';
 import React from '../../components/Icons/React';
 import Node from '../../components/Icons/Node';
+import makeGetPages from '../../api/repos/getPages/makeGetPages';
 
 const { log } = console
 
@@ -34,6 +36,7 @@ function Portfolio({ props, children }) {
 
     const repos = makeRemoteRepos()
     const readme = makeDownloadReadMe()
+    const pages = makeGetPages()
     
 	// window.onscroll = e => {
 	// 	const scrollHeight = window.scrollY + window.innerHeight
@@ -80,6 +83,7 @@ function Portfolio({ props, children }) {
                            
                         })
                         .catch(error => console.log(error))
+                    pages.get(name)
 
                 } else {
                     //console.log(`${name} - NO`)
@@ -89,20 +93,19 @@ function Portfolio({ props, children }) {
     }
 
     function postConstruct(text, name) {
-        if (text.indexOf('<Disabled/>') === -1) log(1)
         if (text.indexOf('<Disabled/>') === -1) {
             let postInput = {
                 name,
                 description: '',
                 writeOn: [],
-                params: ['noPages']
+                params: []
             }
-
+            
             postInput.fullName = select('<name>', '</name>', text)
             postInput.description = select('<-', '->', text)
             postInput.writeOn = [<Node />]
             
-            console.log(postInput)
+            
             
             setPosts(prevState => [...prevState, postInput])
         }

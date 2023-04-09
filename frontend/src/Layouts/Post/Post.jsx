@@ -13,12 +13,12 @@ let postsCopy = []
 
 function Post({ props }) {
 	const {posts, setPosts} = useContext(PostContext)
-	useEffect(() => log(posts), [posts])
+	//useEffect(() => log(posts), [posts])
 	
 	return (<>
 			{posts.map((post, index) =>
 				
-				<div id={'post-' + (index + 1)} key={post.id - 1} className="post">
+				<div id={'post-' + (index + 1)} key={index} className="post">
 					{/* <div className="post__head">
 						<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M7 4.5C7 3.12 8.12 2 9.5 2h5C15.88 2 17 3.12 17 4.5v5.26L20.12 16H13v5l-1 2-1-2v-5H3.88L7 9.76V4.5z"></path></g></svg>
 						Pinned Tweet
@@ -55,11 +55,14 @@ function Post({ props }) {
 							</div>
 							<div className="post__object">{
 								post.params.indexOf('noPages') ? 
-									<a rel="noreferrer" target="_blank" href={post.otherHost || `https://casi-z.github.io/${post.name}/`}>
-										<iframe title={index + 1} src={`https://casi-z.github.io/${post.name}/`} frameBorder="0"></iframe>
+                                    <a rel="noreferrer" target="_blank" href={post.otherHost || `https://casi-z.github.io/${post.name}/`}>
+                                        
+                                        <iframe title={index + 1} src={`https://casi-z.github.io/${post.name}/`} frameBorder="0">привет</iframe>
+                                        
 										<div className="title">
 											<span>{post.fullName}</span>
-										</div>
+                                        </div>
+                                        
 									</a>	
 								 : <img src={image} alt="" />
 							}</div>
