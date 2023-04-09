@@ -6,4 +6,3 @@ export const API_GIT_REPOS_CONTENTS = `/repos/${API_GIT_USER}/`
 
 export const API_GIT_BASE_CD_URL = 'https://raw.githubusercontent.com'
 export const API_GIT_CONTENT_DOWNLOAD = `/${API_GIT_USER}/`
-console.log(token);
