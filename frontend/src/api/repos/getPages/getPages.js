@@ -7,9 +7,9 @@ export class getPages {
         this.httpClient = httpClient
     }
    
-    async get(name) {
-        const url = "https://api.github.com/repos/casi-z/htmltest/pages"
+    async get(repoName) {
+        const url = `${API_GIT_BASE_URL}/repos/${API_GIT_USER}/${repoName}/pages`
         console.log('url:', url)
         return await this.httpClient.get(url)
     }
-}
+}//

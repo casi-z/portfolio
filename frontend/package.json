@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.2",
     "bootstrap-icons": "^1.9.1",
+    "dotenv": "^16.0.3",
     "gh-pages": "^5.0.0",
     "node-create": "^1.0.0",
     "node-sass": "^8.0.0",
@@ -47,5 +48,4 @@
       "last 1 safari version"
     ]
   }
-  
 }

@@ -24,7 +24,6 @@ const { log } = console
 
 function Portfolio({ props, children }) {
     const [posts, setPosts] = useState([])
-    let postsCopy = [...posts]
 	const wrapper = useRef()
 
 	const [state, setState] = useState({
@@ -82,8 +81,10 @@ function Portfolio({ props, children }) {
                             postConstruct(text, name)
                            
                         })
+                    
+                        
                         .catch(error => console.log(error))
-                    pages.get(name)
+                    
 
                 } else {
                     //console.log(`${name} - NO`)
@@ -92,7 +93,7 @@ function Portfolio({ props, children }) {
             .catch(error => console.log(error))
     }
 
-    function postConstruct(text, name) {
+    async function postConstruct(text, name) {
         if (text.indexOf('<Disabled/>') === -1) {
             let postInput = {
                 name,
@@ -100,10 +101,21 @@ function Portfolio({ props, children }) {
                 writeOn: [],
                 params: []
             }
-            
+            try {
+                const response = await pages.get(name)
+                if (!response) {
+                    postInput.params.push('noPages')
+                } 
+            } catch (error) {
+                log(error)
+                postInput.params.push('noPages')
+            }
+           
             postInput.fullName = select('<name>', '</name>', text)
             postInput.description = select('<-', '->', text)
             postInput.writeOn = [<Node />]
+           
+                
             
             
             
