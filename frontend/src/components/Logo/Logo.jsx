@@ -1,9 +1,15 @@
 import './Logo.scss'
-const test = n => window.addEventListener('keydown',(e)=>{if(e.key==='Alt')alert(n);if(e.key==='Control')console.log(n)})
-const {log} = console
+import { API_GIT_USER } from '../../api/constants';
+import img from '../../img/logo.svg'
+const { log } = console
 function Logo({className, onClick, equate, props}) {
     return(
-        <div onClick={onClick} equate={'width' || equate} className={className + " logo"}></div>
+        <img
+            src={img}
+            onClick={onClick}
+            equate={'width' || equate}
+            className={className + " logo"}
+        />
     )
 }
 export default Logo;

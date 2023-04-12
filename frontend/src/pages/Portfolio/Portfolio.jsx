@@ -45,25 +45,6 @@ function Portfolio({ props, children }) {
 	// 	//log(state.loadedPostsLength, '/' , state.allPostsLength)
 	// }
 
-
-	// function showWatchers() {
-	// 	const token = '#}@@uVoIdq4$@8baW0WDIVR2B---1'
-	// 	if (!localStorage.getItem('token') === token) {
-	// 		localStorage.setItem('token', token)
-	// 		addWatcher()
-	// 	}
-	// }
-
-	// async function addWatcher() {
-	// 	await axios.post('/api/add-watcher', {
-	// 		id: 1
-	// 	})
-    // }
-    
-	function postFilter(filter) {
-
-	}
-	
     function select(from, to, str) {
         if (str.indexOf(from) === -1 || str.indexOf(to) === -1) return null
         return str.substring(
@@ -71,14 +52,69 @@ function Portfolio({ props, children }) {
             str.lastIndexOf(to)
         )
     }
+
+	class ProjectPost {
+        constructor(repoName, repoReadme) {
+            if (repoReadme.indexOf('<Disabled/>') === -1) {
+
+                this.fullName = select('<name>', '</name>', repoReadme)
+                this.name = repoName
+                this.description = select('<-', '->', repoReadme)
+                this.writeOn = [<Node />]
+                this.params = []
+                
+            } else {
+
+                this.invalid = true
+
+            }
+
+        }
+
+        isValid() { 
+            if (this.invalid) {
+                
+                return false
+                
+            } 
+            else return true   
+        }
+
+        async add() {
+            
+            try {
+                const response = await pages.get(this.repoName)
+                if (!response) {
+                    this.params.push('noPages')
+                }
+
+            } catch (error) {
+                log(`Failed to load Github pages in ${this.repoName}:`,error)
+                this.params.push('noPages')
+            }
+            
+            setPosts(prevState => [...prevState, this])
+        }
+    }
+
+	function postFilter(filter) {
+
+	}
+	
     
+
     async function fetchPosts(name) {
         await repos.getReposContents(name)
             .then(data => {
                 if (data.some(repo => repo.name === 'README.md')) {
                     readme.download(name)
                         .then(text => {
-                            postConstruct(text, name)
+                            
+                            const post = new ProjectPost(name, text)
+                            if (post.isValid()) {
+                                
+                                post.add()
+                            }
                            
                         })
                     

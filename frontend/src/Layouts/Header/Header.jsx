@@ -23,7 +23,7 @@ setTimeout(() => {
 	//equate()
 }, 0);
 //window.onresize = equate()
-function Header({ props }) {
+function Header(props) {
 
 	const [views, setViews] = useState(0)
 
@@ -87,7 +87,7 @@ function Header({ props }) {
 				</div>
 				<div className="header__followers followers">
 					<h3><span className="followers__number">{postList.length}</span> Projects</h3>
-					<h3><span className="followers__number">{views}</span> Views</h3>
+					<h3><span className="followers__number">{props.followers}</span> Followers</h3>
 				</div>
 			</div>
 		</header>
