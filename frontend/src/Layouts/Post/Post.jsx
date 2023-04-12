@@ -6,14 +6,15 @@ import Href from '../../components/Href/Href';
 import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { PostContext } from '../../context';
-import image from './decor.PNG'
+import AltImage from '../../img/code.jpg'
 const { log } = console
 
 let postsCopy = []
 
 function Post({ props }) {
+
 	const {posts, setPosts} = useContext(PostContext)
-	//useEffect(() => log(posts), [posts])
+	
 	
 	return (<>
 			{posts.map((post, index) =>
@@ -64,7 +65,7 @@ function Post({ props }) {
                                         </div>
                                         
 									</a>	
-								 : <img src={image} alt="" />
+								 : <img src={AltImage} alt="" />
 							}</div>
 							<div className="projectDescription__links">
 								{post.params.indexOf('noPages') ? <a data-title='Hosting' rel="noreferrer" target="_blank" href={post.otherHost || `https://casi-z.github.io/${post.name}/`} equate="height" className="link link_hosting">

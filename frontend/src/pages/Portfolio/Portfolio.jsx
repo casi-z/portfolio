@@ -3,7 +3,6 @@ import Header from "../../Layouts/Header/Header";
 import Name from "../../Layouts/Name/Name";
 import Post from "../../Layouts/Post/Post";
 import Title from '../../components/Title/Title';
-import axios from 'axios';
 import { useRef } from 'react';
 import { useState } from 'react';
 import Tabs from '../../Layouts/Tabs/Tabs';
@@ -11,9 +10,7 @@ import { PostContext } from '../../context';
 import makeRemoteRepos from '../../api/repos/makeRemoteRepos';
 import { useEffect } from 'react';
 import makeDownloadReadMe from '../../api/repos/downloadReadMe/makeDownloadReadMe';
-import getPages from '../../api/repos/getPages/getPages';
-import { ApiClientFactory } from '../../api/ApiClientFactory';
-import { API_GIT_BASE_URL, API_GIT_USER } from '../../api/constants';
+import makeGetUserFollowers from '../../api/user/userFollowers/makeGetUserFollowers';
 import React from '../../components/Icons/React';
 import Node from '../../components/Icons/Node';
 import makeGetPages from '../../api/repos/getPages/makeGetPages';
@@ -28,7 +25,8 @@ function Portfolio({ props, children }) {
 
 	const [state, setState] = useState({
 		allPostsLength: 0,
-		loadedPostsLength: 0,
+        loadedPostsLength: 0,
+        followers: 0,
 	})
 
    
@@ -36,7 +34,7 @@ function Portfolio({ props, children }) {
     const repos = makeRemoteRepos()
     const readme = makeDownloadReadMe()
     const pages = makeGetPages()
-    
+    const getFollowers = makeGetUserFollowers()
 	// window.onscroll = e => {
 	// 	const scrollHeight = window.scrollY + window.innerHeight
 	// 	if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
@@ -110,11 +108,12 @@ function Portfolio({ props, children }) {
                     readme.download(name)
                         .then(text => {
                             
-                            const post = new ProjectPost(name, text)
-                            if (post.isValid()) {
+                            // const post = new ProjectPost(name, text)
+                            // if (post.isValid()) {
                                 
-                                post.add()
-                            }
+                            //     post.add()
+                            // }
+                            postConstruct(text, name)
                            
                         })
                     
@@ -150,10 +149,6 @@ function Portfolio({ props, children }) {
             postInput.fullName = select('<name>', '</name>', text)
             postInput.description = select('<-', '->', text)
             postInput.writeOn = [<Node />]
-           
-                
-            
-            
             
             setPosts(prevState => [...prevState, postInput])
         }
@@ -168,7 +163,12 @@ function Portfolio({ props, children }) {
 
             })
             .catch(error => console.log(error))
-            //showWatchers()
+        
+        getFollowers.get()
+            
+            .then(data => setState({ ...state, followers: data.length }))
+            .catch(error => console.log(error))
+        
     }, [])
 
 	return (<>
@@ -182,7 +182,7 @@ function Portfolio({ props, children }) {
 				posts,
 				setPosts,
 			}}>
-				<Header />
+                <Header followers={state.followers} />
 
 				<Tabs props={{
 					postFilter,
