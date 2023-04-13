@@ -81,16 +81,15 @@ function Portfolio({ props, children }) {
         async add() {
             
             try {
-                const response = await pages.get(this.repoName)
+                const response = await pages.get(this.name)
                 if (!response) {
                     this.params.push('noPages')
-                }
-
+                } 
             } catch (error) {
-                log(`Failed to load Github pages in ${this.repoName}:`,error)
+                log(error)
                 this.params.push('noPages')
             }
-            
+            log(this)
             setPosts(prevState => [...prevState, this])
         }
     }
@@ -108,12 +107,12 @@ function Portfolio({ props, children }) {
                     readme.download(name)
                         .then(text => {
                             
-                            // const post = new ProjectPost(name, text)
-                            // if (post.isValid()) {
+                            const post = new ProjectPost(name, text)
+                            if (post.isValid()) {
                                 
-                            //     post.add()
-                            // }
-                            postConstruct(text, name)
+                                post.add()
+                            }
+                            //postConstruct(text, name)
                            
                         })
                     
@@ -128,31 +127,7 @@ function Portfolio({ props, children }) {
             .catch(error => console.log(error))
     }
 
-    async function postConstruct(text, name) {
-        if (text.indexOf('<Disabled/>') === -1) {
-            let postInput = {
-                name,
-                description: '',
-                writeOn: [],
-                params: []
-            }
-            try {
-                const response = await pages.get(name)
-                if (!response) {
-                    postInput.params.push('noPages')
-                } 
-            } catch (error) {
-                log(error)
-                postInput.params.push('noPages')
-            }
-           
-            postInput.fullName = select('<name>', '</name>', text)
-            postInput.description = select('<-', '->', text)
-            postInput.writeOn = [<Node />]
-            
-            setPosts(prevState => [...prevState, postInput])
-        }
-    }
+    
     
     useEffect(() => {
         

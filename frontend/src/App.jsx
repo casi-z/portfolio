@@ -5,7 +5,7 @@ const { log } = console
 
 function App() {
 
-    function equate(params) {
+    function equate() {
         const elem = document.querySelectorAll('[equate="width"]')
         elem.forEach(e => e.style.height = `${e.offsetWidth}px`)
         const elemSecond = document.querySelectorAll('[equate="height"]')

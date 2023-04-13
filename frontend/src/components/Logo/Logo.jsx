@@ -7,7 +7,7 @@ function Logo({className, onClick, equate, props}) {
         <img
             src={img}
             onClick={onClick}
-            equate={'width' || equate}
+            equate={equate || 'width'}
             className={className + " logo"}
         />
     )
