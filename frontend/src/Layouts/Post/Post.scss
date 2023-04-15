@@ -15,8 +15,10 @@ $fonts: '../../../public/fonts';
     border-bottom: 1px solid var(--grey);
 	transition-duration: 200ms;
 	padding: 11px 15px;
-    &:hover{
-        background: var(--lightGrey);
+    @media(min-width: 767px){
+        &:hover{
+            background: var(--lightGrey);
+        }
     }
     &#post-1{
         .post__head{opacity: 1; visibility: visible;}
@@ -125,8 +127,10 @@ $fonts: '../../../public/fonts';
                 margin: 0 0.5vw;
                 cursor: pointer;
 				transition-duration: 200ms;
-                &:hover{
-                    transform: translateY(-20%);
+                @media(min-width: 767px){
+                    &:hover{
+                        transform: translateY(-20%);
+                    }
                 }
             }
         }

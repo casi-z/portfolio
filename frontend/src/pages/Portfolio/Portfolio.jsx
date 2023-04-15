@@ -14,7 +14,7 @@ import makeGetUserFollowers from '../../api/user/userFollowers/makeGetUserFollow
 import React from '../../components/Icons/React';
 import Node from '../../components/Icons/Node.jsx';
 import makeGetPages from '../../api/repos/getPages/makeGetPages';
-
+import { icons } from '../../data/IconList';
 const { log } = console
 
 
@@ -53,8 +53,18 @@ function Portfolio({ props, children }) {
                 this.fullName = select('<name>', '</name>', repoReadme)
                 this.name = repoName
                 this.description = select('<-', '->', repoReadme)
-                this.writeOn = [<Node />]
+                this.writeOn = getStack()
                 this.params = []
+
+                function getStack(params) {
+                    const stackString = select('<stack>', '</stack>', repoReadme)
+                    if (stackString) {
+                        return stackString.split(', ').map(item => icons[item])
+                    } else {
+                        return []
+                    }
+                    
+                }
 
             } else {
 
@@ -65,20 +75,18 @@ function Portfolio({ props, children }) {
         }
 
         isValid() {
-            const isPostNotExist = !posts.some(post => post.name === this.name)
+            
             if (
-                !this.invalid
-
+                !this.invalid 
+                && this.description
+                
             ) {
-
                 return true
-
             }
             else return false
         }
 
-        async add() {
-
+        async fetchPages() {
             try {
                 const response = await pages.get(this.name)
                 if (!response) {
@@ -88,7 +96,11 @@ function Portfolio({ props, children }) {
                 log(error)
                 this.params.push('noPages')
             }
-            log(this)
+        }
+
+
+
+        add() {
             setPosts(prevState => [...prevState, this])
         }
     }
@@ -103,7 +115,7 @@ function Portfolio({ props, children }) {
         if (num > reposList.length) return
         fetchPost()
         
-        function fetchPost() {
+        async function fetchPost() {
             if ((num + 1) > reposList.length) return
             const name = reposList[num].name
             
@@ -116,13 +128,16 @@ function Portfolio({ props, children }) {
 
                         readme.download(name)
 
-                            .then(text => {
+                            .then(async text => {
                                 
                                 const post = new ProjectPost(name, text)
 
                                 if (post.isValid()) {
+
+                                    await post.fetchPages()
                                     post.add()
                                 } else {
+
                                     fetchPost()
                                 }
 
