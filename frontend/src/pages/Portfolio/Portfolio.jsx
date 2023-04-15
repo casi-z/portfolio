@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 import makeDownloadReadMe from '../../api/repos/downloadReadMe/makeDownloadReadMe';
 import makeGetUserFollowers from '../../api/user/userFollowers/makeGetUserFollowers';
 import React from '../../components/Icons/React';
-import Node from '../../components/Icons/Node';
+import Node from '../../components/Icons/Node.jsx';
 import makeGetPages from '../../api/repos/getPages/makeGetPages';
 
 const { log } = console
@@ -21,37 +21,32 @@ const { log } = console
 
 function Portfolio({ props, children }) {
     const [posts, setPosts] = useState([])
-	const wrapper = useRef()
+    const wrapper = useRef()
 
-	const [state, setState] = useState({
-		allPostsLength: 0,
+    const [state, setState] = useState({
+        allPostsLength: 0,
         loadedPostsLength: 0,
         followers: 0,
-	})
+        isLoading: false,
+    })
 
-   
+
 
     const repos = makeRemoteRepos()
     const readme = makeDownloadReadMe()
     const pages = makeGetPages()
     const getFollowers = makeGetUserFollowers()
-	// window.onscroll = e => {
-	// 	const scrollHeight = window.scrollY + window.innerHeight
-	// 	if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
-	// 		fetchPosts(reposNames[state.loadedPostsLength].name)
-	// 	}
-	// 	//log(state.loadedPostsLength, '/' , state.allPostsLength)
-	// }
+    
 
     function select(from, to, str) {
         if (str.indexOf(from) === -1 || str.indexOf(to) === -1) return null
         return str.substring(
-            str.indexOf(from) + from.length, 
+            str.indexOf(from) + from.length,
             str.lastIndexOf(to)
         )
     }
 
-	class ProjectPost {
+    class ProjectPost {
         constructor(repoName, repoReadme) {
             if (repoReadme.indexOf('<Disabled/>') === -1) {
 
@@ -60,7 +55,7 @@ function Portfolio({ props, children }) {
                 this.description = select('<-', '->', repoReadme)
                 this.writeOn = [<Node />]
                 this.params = []
-                
+
             } else {
 
                 this.invalid = true
@@ -69,22 +64,26 @@ function Portfolio({ props, children }) {
 
         }
 
-        isValid() { 
-            if (this.invalid) {
-                
-                return false
-                
-            } 
-            else return true   
+        isValid() {
+            const isPostNotExist = !posts.some(post => post.name === this.name)
+            if (
+                !this.invalid
+
+            ) {
+
+                return true
+
+            }
+            else return false
         }
 
         async add() {
-            
+
             try {
                 const response = await pages.get(this.name)
                 if (!response) {
                     this.params.push('noPages')
-                } 
+                }
             } catch (error) {
                 log(error)
                 this.params.push('noPages')
@@ -94,85 +93,105 @@ function Portfolio({ props, children }) {
         }
     }
 
-	function postFilter(filter) {
+    function postFilter(filter) {
 
-	}
-	
-    
-
-    async function fetchPosts(name) {
-        await repos.getReposContents(name)
-            .then(data => {
-                if (data.some(repo => repo.name === 'README.md')) {
-                    readme.download(name)
-                        .then(text => {
-                            
-                            const post = new ProjectPost(name, text)
-                            if (post.isValid()) {
-                                
-                                post.add()
-                            }
-                            //postConstruct(text, name)
-                           
-                        })
-                    
-                        
-                        .catch(error => console.log(error))
-                    
-
-                } else {
-                    //console.log(`${name} - NO`)
-                }
-            })
-            .catch(error => console.log(error))
     }
 
-    
-    
-    useEffect(() => {
+
+    let num = 0
+    function fetchPosts(reposList) {
+        if (num > reposList.length) return
+        fetchPost()
         
+        function fetchPost() {
+            if ((num + 1) > reposList.length) return
+            const name = reposList[num].name
+            
+            num++
+            repos.getReposContents(name)
+
+                .then(files => {
+
+                    if (files.some(file => file.name === 'README.md')) {
+
+                        readme.download(name)
+
+                            .then(text => {
+                                
+                                const post = new ProjectPost(name, text)
+
+                                if (post.isValid()) {
+                                    post.add()
+                                } else {
+                                    fetchPost()
+                                }
+
+                            })
+                    } else {
+                        fetchPost()
+                    }
+                })
+                .catch(error => {
+                    fetchPost()
+                })
+        }
+    }
+
+    useEffect(() => {
+
         repos.getAll()
             .then(data => {
 
-                data.map(item => fetchPosts(item.name))
+                fetchPosts(data)
+
+                window.onscroll = () => {
+
+                    const scrollHeight = window.scrollY + window.innerHeight
+
+                    if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
+
+                        fetchPosts(data)
+                       
+                    }
+                }
 
             })
             .catch(error => console.log(error))
-        
+
         getFollowers.get()
-            
+
             .then(data => setState({ ...state, followers: data.length }))
             .catch(error => console.log(error))
-        
+
     }, [])
 
-	return (<>
-		<Title />
-		{children}
-		<div ref={wrapper} className="wrapper">
-			<a name='top'></a>
-			<Name />
+    return (<>
+        <Title />
+        {children}
+        <div ref={wrapper} className="wrapper">
+            <a name='top'></a>
+            <Name />
 
-			<PostContext.Provider value={{
-				posts,
-				setPosts,
-			}}>
+            <PostContext.Provider value={{
+                posts,
+                setPosts,
+            }}>
                 <Header followers={state.followers} />
 
-				<Tabs props={{
-					postFilter,
-					state,
-					setState,
-					fetchPosts
-				}} />
+                <Tabs props={{
+                    postFilter,
+                    state,
+                    setState,
+                    fetchPosts
+                }} />
 
-				<Post props={{
-					admin: props.admin,
+                <Post props={{
+                    admin: props.admin,
 
-				}} />
-			</PostContext.Provider>
+                }} />
+            </PostContext.Provider>
 
-		</div>
-	</>)
+        </div>
+    </>)
 }
 export default Portfolio;

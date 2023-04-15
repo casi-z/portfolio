@@ -10,15 +10,3 @@ export const icons = {
 	scss: <Scss />,
 	react: <React/>
 }
-/*
-fetch('http://94.253.15.230:5000/api/',{
-    method:'POST',
-    headers:{
-        'Content-Type':'application/json'
-    },
-    body:{
-        id:1
-    },
-}).then(res => res.json()
-).then(data => console.log(data))
-*/

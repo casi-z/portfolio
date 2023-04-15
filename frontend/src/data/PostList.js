@@ -1,6 +1,6 @@
 import JS from "../components/Icons/JS";
 import Scss from "../components/Icons/Scss";
-import Node from "../components/Icons/Node";
+import Node from "../components/Icons/Node.jsx";
 export const postList = [
 
     {
