@@ -6,7 +6,7 @@ import Title from '../../components/Title/Title';
 import { useRef } from 'react';
 import { useState } from 'react';
 import Tabs from '../../Layouts/Tabs/Tabs';
-import { PostContext } from '../../context';
+import { MainContext } from '../../context';
 import makeRemoteRepos from '../../api/repos/makeRemoteRepos';
 import { useEffect } from 'react';
 import makeDownloadReadMe from '../../api/repos/downloadReadMe/makeDownloadReadMe';
@@ -15,28 +15,51 @@ import React from '../../components/Icons/React';
 import Node from '../../components/Icons/Node.jsx';
 import makeGetPages from '../../api/repos/getPages/makeGetPages';
 import { icons } from '../../data/IconList';
+import Loader from '../../components/Loader/Loader'
+import AppLoader from '../../components/AppLoader/AppLoader';
+import { useMemo } from 'react';
 const { log } = console
 
 
 
 function Portfolio({ props, children }) {
+
     const [posts, setPosts] = useState([])
+
     const wrapper = useRef()
 
     const [state, setState] = useState({
         allPostsLength: 0,
         loadedPostsLength: 0,
         followers: 0,
-        isLoading: false,
+        isLoading: true,
+        isLazyLoadFinished: false
     })
 
+    class Loading {
+        progress = 0;
+        constructor(parts) {
+            this.parts = parts
+        }
+        increment() {
+            this.progress++
+            log(`загружено ${this.progress} из ${this.parts}`)
+            if (this.progress === this.parts) {
+                setState({ ...state, isLoading: false })
+            }
+
+        }
+    }
+
+    const repos = makeRemoteRepos(),
+        readme = makeDownloadReadMe(),
+        pages = makeGetPages(),
+        getFollowers = makeGetUserFollowers()
 
 
-    const repos = makeRemoteRepos()
-    const readme = makeDownloadReadMe()
-    const pages = makeGetPages()
-    const getFollowers = makeGetUserFollowers()
-    
+    let LoadingPostIndex = 0,
+        loading = new Loading(1)
+
 
     function select(from, to, str) {
         if (str.indexOf(from) === -1 || str.indexOf(to) === -1) return null
@@ -46,7 +69,10 @@ function Portfolio({ props, children }) {
         )
     }
 
+
+
     class ProjectPost {
+
         constructor(repoName, repoReadme) {
             if (repoReadme.indexOf('<Disabled/>') === -1) {
 
@@ -63,7 +89,7 @@ function Portfolio({ props, children }) {
                     } else {
                         return []
                     }
-                    
+
                 }
 
             } else {
@@ -75,11 +101,11 @@ function Portfolio({ props, children }) {
         }
 
         isValid() {
-            
+
             if (
-                !this.invalid 
+                !this.invalid
                 && this.description
-                
+
             ) {
                 return true
             }
@@ -109,17 +135,20 @@ function Portfolio({ props, children }) {
 
     }
 
-
-    let num = 0
     function fetchPosts(reposList) {
-        if (num > reposList.length) return
-        fetchPost()
-        
-        async function fetchPost() {
-            if ((num + 1) > reposList.length) return
-            const name = reposList[num].name
-            
-            num++
+        if ((LoadingPostIndex + 1) > reposList.length) {
+            setState({ ...state, isLazyLoadFinished: true })
+
+        } else {
+            fetchPost()
+        }
+
+
+        function fetchPost() {
+
+            const name = reposList[LoadingPostIndex].name
+
+            LoadingPostIndex++
             repos.getReposContents(name)
 
                 .then(files => {
@@ -129,13 +158,14 @@ function Portfolio({ props, children }) {
                         readme.download(name)
 
                             .then(async text => {
-                                
+
                                 const post = new ProjectPost(name, text)
 
                                 if (post.isValid()) {
 
                                     await post.fetchPages()
                                     post.add()
+                                    loading.increment()
                                 } else {
 
                                     fetchPost()
@@ -149,6 +179,7 @@ function Portfolio({ props, children }) {
                 .catch(error => {
                     fetchPost()
                 })
+
         }
     }
 
@@ -166,7 +197,7 @@ function Portfolio({ props, children }) {
                     if (scrollHeight >= wrapper.current.getBoundingClientRect().height - 300) {
 
                         fetchPosts(data)
-                       
+
                     }
                 }
 
@@ -180,17 +211,23 @@ function Portfolio({ props, children }) {
 
     }, [])
 
-    return (<>
-        <Title />
-        {children}
-        <div ref={wrapper} className="wrapper">
-            <a name='top'></a>
-            <Name />
 
-            <PostContext.Provider value={{
-                posts,
-                setPosts,
-            }}>
+    setTimeout(() => {
+        log(state.isLoading)
+    }, 500);
+
+    return (<>
+        {/* {state.isLoading ? <AppLoader /> : <></>} */}
+        <MainContext.Provider value={{
+            posts,
+            setPosts,
+        }}>
+            <Title />
+            <div ref={wrapper} className="wrapper">
+                <a name='top'></a>
+                <Name />
+
+
                 <Header followers={state.followers} />
 
                 <Tabs props={{
@@ -200,13 +237,20 @@ function Portfolio({ props, children }) {
                     fetchPosts
                 }} />
 
-                <Post props={{
-                    admin: props.admin,
+                <Post />
 
-                }} />
-            </PostContext.Provider>
 
-        </div>
+                {!state.isLazyLoadFinished
+                    ?
+                    <div className="loader-container">
+                        <Loader />
+                    </div>
+                    :
+                    <></>
+                }
+        
+            </div >
+        </MainContext.Provider>
     </>)
 }
 export default Portfolio;

@@ -5,13 +5,14 @@ import UserName from '../../components/UserName/UserName';
 import Href from '../../components/Href/Href';
 import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
-import { PostContext } from '../../context';
+import { MainContext } from '../../context';
 import AltImage from '../../img/code.jpg'
+import Loader from '../../components/Loader/Loader';
 const { log } = console
 
 function Post(props) {
 
-    const { posts, setPosts } = useContext(PostContext)
+    const { posts, setPosts } = useContext(MainContext)
 
 
     return (<>
@@ -83,6 +84,7 @@ function Post(props) {
             </div>
 
         )}
+        
     </>)
 }
 export default Post;

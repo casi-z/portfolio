@@ -1,6 +1,6 @@
 import "./Header.scss"
-import equate from "../../utils/equate";
-import wordRandom from '../../utils/wordRandom'
+import equate from "../../utils/equateProperties";
+import randomElement from '../../utils/randomElement'
 import Logo from "../../components/Logo/Logo"
 import GeoLocation from "../../components/Icons/GeoLocation/GeoLocation";
 import Calendar from "../../components/Icons/Calendar/Calendar"
@@ -15,34 +15,36 @@ import { postList } from "../../data/PostList";
 import Href from "../../components/Href/Href"
 import { useState } from "react";
 import LogoPopUp from "../../components/LogoPopUp/LogoPopUp";
-// eslint-disable-next-line
+
 const { log } = console
 
 
-setTimeout(() => {
-	//equate()
-}, 0);
-//window.onresize = equate()
 function Header(props) {
 
-	const [views, setViews] = useState(0)
-
-	function getViews(params) {
-		// await axios.get('/api/watchers')
-		// 	.then(res => setViews(res.data.watchers))
-		setViews(15)
-	}
-	useEffect(() => {
-		getViews()
-	}, [])
 	const [isBigLogoVisible, setIsBigLogoVisible] = useState(false)
+	const [splash, setSplash] = useState('')
+	
+	function openPopUp(){
+		setIsBigLogoVisible(true)
+	}
+
+	useEffect(() => {
+		setSplash(randomElement([
+
+			'Знает как отцентровать div',
+			'Grid или Flex?',
+			'Закос под твиттер, зато не банально',
+			'Здесь есть мобильная версия, Карл!',
+		]))
+	},[])
+
 	return (
 		<header className="header">
-			<LogoPopUp props={{isBigLogoVisible, setIsBigLogoVisible}}/>
+			<LogoPopUp isBigLogoVisible={isBigLogoVisible} setIsBigLogoVisible={setIsBigLogoVisible}/>
 			<div className="header__row header__row_decor"/>
 			<div className="header__row header__row_info">
 
-				<Logo onClick={() => setIsBigLogoVisible(true)} />
+				<Logo onClick={openPopUp} />
 				<div className="header__buttons">
 					<Button><Tools /></Button>
 					<Button><Mail /></Button>
@@ -55,15 +57,7 @@ function Header(props) {
 
 
 				<span className='header__splash'>
-					{
-						wordRandom([
-
-							'Знает как отцентровать div',
-							'Grid или Flex?',
-							'Закос под твиттер, зато не банально',
-							'Здесь есть мобильная версия, Карл!',
-						])
-					}
+					{splash}
 				</span>
 				
 				<div className="hashTags">

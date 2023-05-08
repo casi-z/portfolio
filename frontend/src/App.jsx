@@ -1,28 +1,24 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Portfolio from "./pages/Portfolio/Portfolio"
+import equateProperties from './utils/equateProperties';
 const { log } = console
 
 function App() {
 
-    function equate() {
-        const elem = document.querySelectorAll('[equate="width"]')
-        elem.forEach(e => e.style.height = `${e.offsetWidth}px`)
-        const elemSecond = document.querySelectorAll('[equate="height"]')
-        elemSecond.forEach(e => e.style.width = `${e.offsetHeight}px`)
-    }
-    window.addEventListener('resize', () => equate())
+    
+    window.addEventListener('resize', () => equateProperties())
 
     useEffect(() => {
-        equate()
+        equateProperties()
     }, [])
 
 
     return (
 
-        <Portfolio props={{ admin: false }} />
+        <Portfolio />
 
-    );
+    )
 }
 
 export default App;

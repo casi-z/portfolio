@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export const PostContext = createContext(null)
+export const MainContext = createContext(null)

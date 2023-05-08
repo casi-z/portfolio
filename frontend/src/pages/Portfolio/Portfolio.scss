@@ -9,10 +9,10 @@ html{
         align-items: center;
         flex-direction: column;
         font-family: sans-serif;
-		//font-size: 26px;
 		line-height: 20px;
 		font-weight: 300;
 		letter-spacing: .01em;
+        
         .wrapper{
             width: 598px;
             min-height: var(--headerHeight);
@@ -21,6 +21,12 @@ html{
             @media(max-width:599px){
                 width: 100vw;
             }
+        }
+        .loader-container{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 10%;
         }
     }
 }
